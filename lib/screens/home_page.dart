@@ -1,4 +1,5 @@
 import 'package:carsome_assignment/components/album_button.dart';
+import 'package:carsome_assignment/components/album_grid.dart';
 import 'package:carsome_assignment/models/album_model.dart';
 import 'package:carsome_assignment/models/http_request.dart';
 import 'package:flutter/foundation.dart';
@@ -12,6 +13,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -31,47 +35,22 @@ class HomePage extends StatelessWidget {
               ),
             ],
           ),
-          Expanded(
+          Flexible(
             child: FutureBuilder<List<Photo>>(
               future: fetchPhotos(http.Client()),
               builder: (context, snapshot) {
                 if (snapshot.hasError) print(snapshot.error);
 
-                return snapshot.hasData ? PhotosList(photos: snapshot.data) : Center(child: CircularProgressIndicator());
+                return snapshot.hasData
+                    ? AlbumGrid(photos: snapshot.data, width: _width, height: _height)
+                    : Center(
+                        child: CircularProgressIndicator(),
+                      );
               },
             ),
           ),
         ],
       ),
-    );
-  }
-}
-
-class PhotosList extends StatelessWidget {
-  final List<Photo> photos;
-
-  PhotosList({Key key, this.photos}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-      ),
-      padding: EdgeInsets.all(28),
-      itemCount: photos.length,
-      itemBuilder: (context, index) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.network(photos[index].thumbnailUrl),
-            Text(
-              photos[index].title,
-              overflow: TextOverflow.ellipsis,
-            )
-          ],
-        );
-      },
     );
   }
 }
