@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'album_model.dart';
 import 'package:http/http.dart' as http;
 
-Future<List<Photo>> fetchPhotos(http.Client client) async {
-  final response = await client.get('https://jsonplaceholder.typicode.com/photos?albumId=1');
+Future<List<Photo>> fetchPhotos(http.Client client, String url) async {
+  final response = await client.get(url);
 
   return compute(parsePhotos, response.body);
 }

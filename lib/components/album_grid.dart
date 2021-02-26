@@ -21,18 +21,20 @@ class AlbumGrid extends StatelessWidget {
       shrinkWrap: true,
       itemCount: photos.length,
       itemBuilder: (context, index) {
-        return Wrap(
-          direction: Axis.horizontal,
-          children: [
-            Image.network(photos[index].thumbnailUrl),
-            RichText(
-              text: TextSpan(
-                text: photos[index].title,
-                style: TextStyle(color: Colors.black),
-              ),
-              overflow: TextOverflow.ellipsis,
-            )
-          ],
+        return Center(
+          child: Wrap(
+            direction: Axis.horizontal,
+            children: [
+              Image.network(photos[index].thumbnailUrl),
+              RichText(
+                text: TextSpan(
+                  text: photos[index].title,
+                  style: TextStyle(color: Colors.black),
+                ),
+                overflow: TextOverflow.ellipsis,
+              )
+            ],
+          ),
         );
       },
     );
